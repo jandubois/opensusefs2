@@ -1,0 +1,12 @@
+[submodule "ruby-buildpack"]
+	path = ruby-buildpack
+	url = https://github.com/jandubois/ruby-buildpack
+[submodule "php-buildpack"]
+	path = php-buildpack
+	url = https://github.com/jandubois/php-buildpack
+[submodule "stacks"]
+	path = stacks
+	url = https://github.com/jandubois/stacks
+[submodule "binary-builder"]
+	path = binary-builder
+	url = https://github.com/jandubois/binary-builder
