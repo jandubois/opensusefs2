@@ -10,3 +10,6 @@
 [submodule "binary-builder"]
 	path = binary-builder
 	url = https://github.com/jandubois/binary-builder
+[submodule "opensusefs2-rootfs-release"]
+	path = opensusefs2-rootfs-release
+	url = https://github.com/jandubois/opensusefs2-rootfs-release
