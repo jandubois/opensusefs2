@@ -13,3 +13,9 @@
 [submodule "opensusefs2-rootfs-release"]
 	path = opensusefs2-rootfs-release
 	url = https://github.com/jandubois/opensusefs2-rootfs-release
+[submodule "php-buildpack-release"]
+	path = php-buildpack-release
+	url = https://github.com/jandubois/php-buildpack-release
+[submodule "ruby-buildpack-release"]
+	path = ruby-buildpack-release
+	url = https://github.com/jandubois/ruby-buildpack-release
