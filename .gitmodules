@@ -19,3 +19,12 @@
 [submodule "ruby-buildpack-release"]
 	path = ruby-buildpack-release
 	url = https://github.com/jandubois/ruby-buildpack-release
+[submodule "java-buildpack-dependency-builder"]
+	path = java-buildpack-dependency-builder
+	url = https://github.com/jandubois/java-buildpack-dependency-builder
+[submodule "java-offline-buildpack-release"]
+	path = java-offline-buildpack-release
+	url = https://github.com/jandubois/java-offline-buildpack-release
+[submodule "java-buildpack"]
+	path = java-buildpack
+	url = https://github.com/jandubois/java-buildpack
