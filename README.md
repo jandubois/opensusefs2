@@ -27,7 +27,7 @@ The rootfs is built using the [stacks](https://github.com/jandubois/stacks/tree/
 ```bash
 make
 docker push jandubois/opensusefs2
-mv opensusefs2.tar.gz opensusefs2-$(git describe --tags --abbrev=0).tar.gz
+../bin/sha1stamp opensusefs2.tar.gz $(git describe --tags --abbrev=0)
 s3cmd put opensusefs2*.tar.gz s3://jandubois
 s3cmd setacl s3://jandubois --acl-public --recursive
 sha1sum opensusefs2*.tar.gz
@@ -67,10 +67,11 @@ The `binary-builder` has a [ruby recipe](https://github.com/jandubois/binary-bui
 curl -L -O https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.3.tar.gz
 md5sum ruby-2.3.3.tar.gz
 docker run -w /binary-builder -v `pwd`:/binary-builder -it jandubois/opensusefs2 ./bin/binary-builder --name=ruby --version=2.3.3 --md5=e485f3a55649eb24a1e2e1a40bc120df
-s3cmd put ruby-2.3.3-linux-x64.tgz s3://jandubois
+../bin/sha1stamp ruby-2.3.3-linux-x64.tgz
+s3cmd put ruby-2.3.3-linux-x64*.tgz s3://jandubois
 s3cmd setacl s3://jandubois --acl-public --recursive
-md5sum ruby-2.3.3-linux-x64.tgz
-ls -l ruby-2.3.3-linux-x64.tgz
+md5sum ruby-2.3.3-linux-x64*.tgz
+ls -l ruby-2.3.3-linux-x64*.tgz
 ```
 
 The MD5 hash and file size will be needed for updating the `ruby-buildpack` with this new binary.
@@ -89,9 +90,10 @@ vi manifest.yml
 BUNDLE_GEMFILE=cf.Gemfile bundle
 vi /usr/local/lib/ruby/gems/2.4.0/bundler/gems/buildpack-packager-63c7297eec83/lib/buildpack/packager/manifest_schema.yml
 BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached
-s3cmd put ruby_buildpack-cached-v1.6.34.zip s3://jandubois
+../bin/sha1stamp ruby_buildpack-cached-v1.6.34.zip
+s3cmd put ruby_buildpack-cached-v1.6.34*.zip s3://jandubois
 s3cmd setacl s3://jandubois --acl-public --recursive
-md5sum ruby_buildpack-cached-v1.6.34.zip
+md5sum ruby_buildpack-cached-v1.6.34*.zip
 ```
 
 

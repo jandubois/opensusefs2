@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+
+filename=$1
+version=$2
+
+if [ ! -f "${filename}" ]; then
+   echo ${filename} does not exist
+   exit 1
+fi
+
+suffix=$(perl -e '$ARGV[0] =~ /(\.tar\.gz|\.[a-z]+)$/&& print $1' -- ${filename})
+newname=$(basename -s "${suffix}" "${filename}")
+[ -n "${version}" ] && newname="${newname}-${version}"
+newname="${newname}-$(sha1sum ${filename} | cut -c -7)${suffix}"
+
+mv "${filename}" "${newname}"
+echo ${newname}
