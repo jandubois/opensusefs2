@@ -86,15 +86,44 @@ Each CF buildpack is maintained in it's own separate repo, e.g. Ruby in the [rub
 The one complication is that the `buildpack-packager` is validating the `manifest.yml` against a schema that has the official stack names [hard-coded](https://github.com/cloudfoundry/buildpack-packager/blob/4dbb1042af7585fef7fe8185a5c7aeea47695af1/lib/buildpack/packager/manifest_schema.yml#L67). For now I am just editing the schema manually after installing the gem:
 
 ```bash
-vi manifest.yml
+$EDITOR manifest.yml
 BUNDLE_GEMFILE=cf.Gemfile bundle
-vi /usr/local/lib/ruby/gems/2.4.0/bundler/gems/buildpack-packager-63c7297eec83/lib/buildpack/packager/manifest_schema.yml
+$EDITOR /usr/local/lib/ruby/gems/2.4.0/bundler/gems/buildpack-packager-63c7297eec83/lib/buildpack/packager/manifest_schema.yml
 BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached
 ../bin/sha1stamp ruby_buildpack-cached-v1.6.34.zip
 s3cmd put ruby_buildpack-cached-v1.6.34*.zip s3://jandubois
 s3cmd setacl s3://jandubois --acl-public --recursive
 md5sum ruby_buildpack-cached-v1.6.34*.zip
 ```
+
+### Updating the java-buildpack with opensusefs2 support ###
+
+The `java-buildpack` is maintained by the"Java Experience" team and is completely different from the other buildpacks. It doesn't rely on the `CF_STACKS` environment variable, but has it's own platform detection code (it has support for running on Redhat, and even OS X).
+
+I've done some testing with the [java-test-applications](https://github.com/cloudfoundry/java-test-applications), and it seems like the `trusty` binaries work as-is on `opensusefs2` (commands below on OS X):
+
+```bash
+brew tap pivotal/tap
+brew install springboot
+brew install typesafe-activator
+
+cd java-test-applications
+./gradlew build
+
+cd java-main-application
+$EDITOR manifest.yml
+cf push
+```
+
+In the `manifest.yml` you need to update the `buildpack` and `stack` keys.
+
+So for now I've applied a simplistic [patch](https://github.com/jandubois/java-buildpack/commit/dd293d3) to the java-buildpack to pretend that any SUSE system is a `trusty` instance. This does have the undesirable side-effect that the asset URLs displayed during staging include the `trusty` string verbatim, even when building on `opensusefs2`:
+
+```
+Downloading Open Jdk JRE 1.8.0_121 from https://java-buildpack.cloudfoundry.org/openjdk/trusty/x86_64/openjdk-1.8.0_121.tar.gz (found in cache)
+```
+
+I have not used the [java-buildpack-system-test](https://github.com/cloudfoundry/java-buildpack-system-test) integration tests.
 
 
 ### Creating bosh releases for the multi-stack buildpacks ###
