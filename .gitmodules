@@ -34,3 +34,6 @@
 [submodule "python-buildpack"]
 	path = python-buildpack
 	url = https://github.com/jandubois/python-buildpack
+[submodule "staticfile-buildpack-release"]
+	path = staticfile-buildpack-release
+	url = https://github.com/jandubois/staticfile-buildpack-release
