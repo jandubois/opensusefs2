@@ -28,3 +28,9 @@
 [submodule "java-buildpack"]
 	path = java-buildpack
 	url = https://github.com/jandubois/java-buildpack
+[submodule "staticfile-buildpack"]
+	path = staticfile-buildpack
+	url = https://github.com/jandubois/staticfile-buildpack
+[submodule "python-buildpack"]
+	path = python-buildpack
+	url = https://github.com/jandubois/python-buildpack
