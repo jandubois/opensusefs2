@@ -40,3 +40,6 @@
 [submodule "python-buildpack-release"]
 	path = python-buildpack-release
 	url = https://github.com/jandubois/python-buildpack-release
+[submodule "java-buildpack-release"]
+	path = java-buildpack-release
+	url = https://github.com/jandubois/java-buildpack-release
