@@ -43,3 +43,15 @@
 [submodule "java-buildpack-release"]
 	path = java-buildpack-release
 	url = https://github.com/jandubois/java-buildpack-release
+[submodule "go-buildpack-release"]
+	path = go-buildpack-release
+	url = https://github.com/jandubois/go-buildpack-release
+[submodule "go-buildpack"]
+	path = go-buildpack
+	url = https://github.com/jandubois/go-buildpack
+[submodule "nodejs-buildpack"]
+	path = nodejs-buildpack
+	url = https://github.com/jandubois/nodejs-buildpack
+[submodule "nodejs-buildpack-release"]
+	path = nodejs-buildpack-release
+	url = https://github.com/jandubois/nodejs-buildpack-release
