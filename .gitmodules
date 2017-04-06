@@ -55,3 +55,6 @@
 [submodule "nodejs-buildpack-release"]
 	path = nodejs-buildpack-release
 	url = https://github.com/jandubois/nodejs-buildpack-release
+[submodule "cf-acceptance-tests"]
+	path = cf-acceptance-tests
+	url = https://github.com/jandubois/cf-acceptance-tests
