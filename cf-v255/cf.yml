@@ -443,8 +443,6 @@ jobs:
     release: cf
   - name: staticfile-buildpack
     release: cf
-  - name: dotnet-core-buildpack
-    release: cf
   - consumes:
       nats: nil
     name: cloud_controller_ng
@@ -518,8 +516,6 @@ jobs:
   - name: python-buildpack
     release: cf
   - name: staticfile-buildpack
-    release: cf
-  - name: dotnet-core-buildpack
     release: cf
   - consumes:
       nats: nil
@@ -2974,8 +2970,6 @@ properties:
       package: php-buildpack
     - name: binary_buildpack
       package: binary-buildpack
-    - name: dotnet_core_buildpack
-      package: dotnet-core-buildpack
     default_health_check_timeout: 60
     default_quota_definition: default
     default_running_security_groups:
@@ -2987,7 +2981,7 @@ properties:
     default_staging_security_groups:
     - public_networks
     - dns
-    default_to_diego_backend: false
+    default_to_diego_backend: true
     development_mode: false
     diego:
       bbs:
@@ -3060,8 +3054,6 @@ properties:
       package: php-buildpack
     - name: binary_buildpack
       package: binary-buildpack
-    - name: dotnet_core_buildpack
-      package: dotnet-core-buildpack
     internal_api_password: internal-password
     internal_api_user: internal_user
     jobs:
@@ -3326,8 +3318,6 @@ properties:
       package: php-buildpack
     - name: binary_buildpack
       package: binary-buildpack
-    - name: dotnet_core_buildpack
-      package: dotnet-core-buildpack
     system_hostnames: null
     thresholds:
       api:
