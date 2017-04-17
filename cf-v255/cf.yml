@@ -426,23 +426,23 @@ jobs:
     name: consul_agent
     release: cf
   - name: java-buildpack
-    release: cf
+    release: opensusefs2
   - name: java-offline-buildpack
-    release: cf
+    release: opensusefs2
   - name: go-buildpack
-    release: cf
+    release: opensusefs2
   - name: binary-buildpack
     release: cf
   - name: nodejs-buildpack
-    release: cf
+    release: opensusefs2
   - name: ruby-buildpack
-    release: cf
+    release: opensusefs2
   - name: php-buildpack
-    release: cf
+    release: opensusefs2
   - name: python-buildpack
-    release: cf
+    release: opensusefs2
   - name: staticfile-buildpack
-    release: cf
+    release: opensusefs2
   - consumes:
       nats: nil
     name: cloud_controller_ng
@@ -2978,6 +2978,7 @@ properties:
     - services
     - load_balancer
     - user_bosh_deployments
+    default_stack: opensusefs2
     default_staging_security_groups:
     - public_networks
     - dns
@@ -2986,6 +2987,7 @@ properties:
     diego:
       bbs:
         url: null
+      docker_staging_stack: opensusefs2
       insecure_docker_registry_list: null
       pid_limit: null
       temporary_cc_uploader_mtls: false
@@ -3298,7 +3300,9 @@ properties:
     service_usage_events:
       cutoff_age_in_days: 31
     srv_api_uri: https://api.bosh-lite.com
-    stacks: null
+    stacks:
+    - name: opensusefs2
+      description: openSUSE-based filesystem
     staging_upload_password: upload-password
     staging_upload_user: upload-user
     system_buildpacks:
@@ -4640,6 +4644,8 @@ properties:
       tag: admin
 releases:
 - name: cf
+  version: latest
+- name: opensusefs2
   version: latest
 resource_pools:
 - cloud_properties:

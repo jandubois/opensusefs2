@@ -562,8 +562,8 @@ jobs:
     release: diego
   - name: garden
     release: garden-runc
-  - name: cflinuxfs2-rootfs-setup
-    release: cflinuxfs2-rootfs
+  - name: opensusefs2-rootfs-setup
+    release: opensusefs2
   - name: metron_agent
     release: cf
   - name: cfdot
@@ -866,8 +866,8 @@ jobs:
     release: diego
   - name: garden
     release: garden-runc
-  - name: cflinuxfs2-rootfs-setup
-    release: cflinuxfs2-rootfs
+  - name: opensusefs2-rootfs-setup
+    release: opensusefs2
   - name: metron_agent
     release: cf
   - name: cfdot
@@ -1170,8 +1170,8 @@ jobs:
     release: diego
   - name: garden
     release: garden-runc
-  - name: cflinuxfs2-rootfs-setup
-    release: cflinuxfs2-rootfs
+  - name: opensusefs2-rootfs-setup
+    release: opensusefs2
   - name: metron_agent
     release: cf
   - name: cfdot
@@ -1277,8 +1277,8 @@ jobs:
     release: garden-runc
   - name: nsync
     release: cf
-  - name: cflinuxfs2-rootfs-setup
-    release: cflinuxfs2-rootfs
+  - name: opensusefs2-rootfs-setup
+    release: opensusefs2
   - name: route_emitter
     release: diego
   - name: ssh_proxy
@@ -1326,8 +1326,8 @@ jobs:
     release: garden-runc
   - name: nsync
     release: cf
-  - name: cflinuxfs2-rootfs-setup
-    release: cflinuxfs2-rootfs
+  - name: opensusefs2-rootfs-setup
+    release: opensusefs2
   - name: route_emitter
     release: diego
   - name: ssh_proxy
@@ -1375,8 +1375,8 @@ jobs:
     release: garden-runc
   - name: nsync
     release: cf
-  - name: cflinuxfs2-rootfs-setup
-    release: cflinuxfs2-rootfs
+  - name: opensusefs2-rootfs-setup
+    release: opensusefs2
   - name: route_emitter
     release: diego
   - name: ssh_proxy
@@ -1613,6 +1613,9 @@ properties:
         basic_auth_username: internal_user
       diego_privileged_containers: null
       dropsonde_port: null
+      lifecycle_bundles:
+        - "buildpack/opensusefs2:buildpack_app_lifecycle/buildpack_app_lifecycle.tgz"
+        - "docker:docker_app_lifecycle/docker_app_lifecycle.tgz"
       log_level: debug
     stager:
       bbs:
@@ -1702,14 +1705,19 @@ properties:
           BSgiGpK7DUMYgC6mggfL8bPrhWG3B39Q+VC8B6K/Y29xe8HZQThhick=
           -----END RSA PRIVATE KEY-----
         client_session_cache_size: null
+        docker_staging_stack: opensusefs2
         max_idle_conns_per_host: null
         require_ssl: true
       cc:
         basic_auth_password: internal-password
         basic_auth_username: internal_user
       diego_privileged_containers: null
+      docker_staging_stack: opensusefs2
       dropsonde_port: null
       insecure_docker_registry_list: null
+      lifecycle_bundles:
+        - "buildpack/opensusefs2:buildpack_app_lifecycle/buildpack_app_lifecycle.tgz"
+        - "docker:docker_app_lifecycle/docker_app_lifecycle.tgz"
       log_level: debug
     tps:
       bbs:
@@ -1892,7 +1900,7 @@ properties:
       listener_enabled: null
       log_level: null
   cf_networking: null
-  cflinuxfs2-rootfs:
+  opensusefs2-rootfs:
     trusted_certs: null
   consul:
     agent:
@@ -2907,7 +2915,7 @@ properties:
         api_location: null
       log_level: debug
       preloaded_rootfses:
-      - cflinuxfs2:/var/vcap/packages/cflinuxfs2/rootfs
+      - opensusefs2:/var/vcap/packages/opensusefs2/rootfs
       require_tls: false
       server_cert: |+
         -----BEGIN CERTIFICATE-----
@@ -3245,7 +3253,7 @@ properties:
     network_plugin_extra_args: null
     network_pool: null
     persistent_image_list:
-    - /var/vcap/packages/cflinuxfs2/rootfs
+    - /var/vcap/packages/opensusefs2/rootfs
     privileged_image_plugin: null
     privileged_image_plugin_extra_args: null
   grootfs: null
@@ -3359,11 +3367,11 @@ properties:
 releases:
 - name: diego
   version: latest
-- name: cflinuxfs2-rootfs
-  version: latest
 - name: garden-runc
   version: latest
 - name: cf
+  version: latest
+- name: opensusefs2
   version: latest
 resource_pools:
 - cloud_properties: {}
