@@ -1,0 +1,19 @@
+{
+  "suite_name"                      : "CF_SMOKE_TESTS",
+  "api"                             : "api.bosh-lite.com",
+  "apps_domain"                     : "bosh-lite.com",
+  "user"                            : "admin",
+  "password"                        : "admin",
+  "org"                             : "CF-SMOKE-ORG",
+  "space"                           : "CF-SMOKE-SPACE",
+  "cleanup"                         : true,
+  "use_existing_org"                : false,
+  "use_existing_space"              : false,
+  "logging_app"                     : "",
+  "runtime_app"                     : "",
+  "enable_windows_tests"            : false,
+  "enable_etcd_cluster_check_tests" : false,
+  "etcd_ip_address"                 : "",
+  "skip_ssl_validation"             : true,
+  "backend"                         : "diego"
+}
