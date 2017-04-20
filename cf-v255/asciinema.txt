@@ -1,0 +1,95 @@
+### Resize terminal to 112x34 (check with `tput cols && tput lines`)
+### cd .../opensusefs2/cf-v255
+
+export PS1='\[\e[0;32m\]\W>\[\e[0m\] '
+asciinema rec -t "CF 255 with opensusefs2 on bosh-lite" -w 3 cf255.json
+
+scp *.yml *.json zuze:
+ssh zuze
+
+export PS1='\[\e[1;34m\]$(perl -e "print q(-) x `tput cols`")\[\e[0;32m\]\w>\[\e[0m\] '
+function say { echo "$1" | sed 's/ /   /g' | figlet -ctk | lolcat.ruby2.1 -F 0.2; }
+alias bosh=bosh.ruby2.1
+
+say "CF 255 with opensusefs2 on bosh-lite"
+screenfetch
+
+say "Create bosh-lite Vagrant box"
+mkdir workspace
+cd workspace
+git clone git@github.com:cloudfoundry/bosh-lite.git
+cd bosh-lite
+# Vagrant box needs at least 14GB to be able to run CATS
+VM_MEMORY=14336 vagrant up
+bin/add-route
+bosh target 192.168.50.4 lite
+cd
+
+say "Upload releases"
+bosh upload stemcell https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent
+bosh upload release https://bosh.io/d/github.com/cloudfoundry/cf-release?v=255
+bosh upload release https://bosh.io/d/github.com/cloudfoundry/diego-release?v=1.11.0
+bosh upload release https://bosh.io/d/github.com/cloudfoundry/garden-runc-release?v=1.3.0
+# opensusefs2-release includes both the rootfs and the buildpacks
+bosh upload release https://s3.amazonaws.com/cf-opensusefs2/opensusefs2-0%2Bdev.2.tgz
+
+say "Deploy releases"
+# The deployment manifests are referencing the rootfs and buildpacks from opensusefs2-release
+bosh -n -d cf.yml deploy
+bosh -n -d diego.yml deploy
+
+say "Setup org and space"
+cf login -a api.bosh-lite.com -u admin -p admin --skip-ssl-validation
+cf enable-feature-flag diego_docker
+cf create-org suse
+cf target -o suse
+cf create-space myspace
+cf target -o suse -s myspace
+
+say "go-env demo app"
+git clone git@github.com:stackato-samples/go-env.git
+cd go-env
+cf push
+# The manifest.yml has hardcoded the stack and buildpack
+vim manifest.yml
+cf push
+# Check that the app works
+curl -s go-env.bosh-lite.com | sort
+# Verify that the app is running on the openSUSE stack
+cf ssh go-env -c "cat /etc/os-release" | egrep -i "suse|"
+cf delete -f go-env
+cd
+
+say "Smoke tests"
+mkdir go
+export GOPATH=$HOME/go
+go get -d github.com/cloudfoundry/cf-smoke-tests
+cd ~/go/src/github.com/cloudfoundry/cf-smoke-tests/
+export CONFIG=$HOME/smoke.json
+./bin/test
+
+say "Acceptance tests"
+go get -d github.com/cloudfoundry/cf-acceptance-tests
+cd ~/go/src/github.com/cloudfoundry/cf-acceptance-tests
+# One test needs to be updated because it has a hardcoded dependency on Ubuntu Trusty
+git remote add jandubois git@github.com:jandubois/cf-acceptance-tests.git
+git fetch jandubois
+git merge --commit --no-edit jandubois/opensusefs2
+
+export CONFIG=$HOME/cats.json
+./bin/test -r -slowSpecThreshold=120 -skipPackage=helpers -keepGoing -nodes=1
+
+say "The End"
+
+Ctrl-D
+Ctrl-D
+
+### Changed my mind, set maximum wait to 1.5s
+jq '(.stdout[] | select(.[0] > 1.5) | .[0]) |= 1.5' cf255.json > demo.json
+### Create a seconds copy with max-wait 0.3 (replace CATS results with the faster version)
+jq '(.stdout[] | select(.[0] > 0.3) | .[0]) |= 0.3' cf255.json > demo-fast.json
+
+### edit demo.json
+jq '.duration = reduce .stdout[] as $i (0; . + $i[0])' demo.json > cf255-final.json
+
+asciinema upload cf255-final.json
